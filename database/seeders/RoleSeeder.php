@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserRole;
+use App\Models\Role;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +14,10 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Role::query()->insert([
+            ['name' => UserRole::ADMINISTRATOR->getText()],
+            ['name' => UserRole::STAFF->getText()],
+            ['name' => UserRole::MEMBER->getText()],
+        ]);
     }
 }
