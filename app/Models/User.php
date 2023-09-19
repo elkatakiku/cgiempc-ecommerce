@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\UserRole;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -14,7 +15,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasUuids, Sluggable;
+    use HasApiTokens, HasFactory, Notifiable, HasUuids;
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +24,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'slug',
+        'username',
         'email',
         'password',
         'role_id',
@@ -49,22 +50,18 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function sluggable(): array
+    public function role(): Attribute
     {
-        return [
-            'slug' => [
-                'source' => 'name',
-            ],
-        ];
-    }
-
-    public function role(): UserRole
-    {
-        return UserRole::findById($this->attributes['role_id']);
+        return Attribute::get(fn ($value, $attributes) => UserRole::findById($attributes['role_id']));
     }
 
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return $this->roles()->where('name', strtolower($role))->exists();
     }
 }

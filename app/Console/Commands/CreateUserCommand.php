@@ -31,13 +31,14 @@ class CreateUserCommand extends Command
     {
 //        Get user info
         $user['name'] = $this->ask('Name of the user:');
+        $user['username'] = $this->ask('Username of the user:');
         $user['email'] = $this->ask('Email of the user:');
         $user['password'] = $this->secret('Password of the user:');
 
 //        Get user role
         $roleChoice = $this->choice(
             question: 'Role of the user:',
-            choices: [UserRole::ADMINISTRATOR->getText(), UserRole::STAFF->getText(), UserRole::MEMBER->getText()],
+            choices: UserRole::getRoles()->values()->toArray(),
             multiple: true,
         );
 
@@ -53,7 +54,13 @@ class CreateUserCommand extends Command
         }
 
         if ($this->validate($user)) {
-            $userService->createUser($user['name'], $user['email'], $user['password'], $roles);
+            $userService->createUser(
+                $user['name'],
+                $user['username'],
+                $user['email'],
+                $user['password'],
+                $roles,
+            );
             $this->info("User {$user['email']} created successfully.");
 
             return 0;
@@ -66,6 +73,7 @@ class CreateUserCommand extends Command
     {
         $validator = Validator::make($user, [
             'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'max:255', 'email', 'unique:users'],
             'password' => ['required', Password::default()],
         ]);

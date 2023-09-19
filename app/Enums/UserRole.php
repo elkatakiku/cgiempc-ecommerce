@@ -2,11 +2,28 @@
 
 namespace App\Enums;
 
+use Illuminate\Support\Collection;
+
 enum UserRole: int
 {
     case ADMINISTRATOR = 1;
     case STAFF = 2;
     case MEMBER = 3;
+
+    public function isAdmin(): bool
+    {
+        return $this == self::ADMINISTRATOR;
+    }
+
+    public function isStaff(): bool
+    {
+        return $this == self::ADMINISTRATOR;
+    }
+
+    public function isMember(): bool
+    {
+        return $this == self::ADMINISTRATOR;
+    }
 
     public function getText(): string
     {
@@ -33,5 +50,14 @@ enum UserRole: int
             self::STAFF->value => self::STAFF,
             self::MEMBER->value => self::MEMBER,
         };
+    }
+
+    public static function getRoles(): Collection
+    {
+        return collect([
+            self::ADMINISTRATOR->value => self::ADMINISTRATOR->getText(),
+            self::STAFF->value => self::STAFF->getText(),
+            self::MEMBER->value => self::MEMBER->getText(),
+        ]);
     }
 }
