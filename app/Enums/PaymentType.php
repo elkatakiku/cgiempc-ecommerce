@@ -4,17 +4,17 @@ namespace App\Enums;
 
 use Illuminate\Support\Collection;
 
-enum TypeOfPayment: string
+enum PaymentType: string
 {
     case FULL = 'full';
     case INSTALLMENT = 'installment';
 
-    public function isFullPayment(): bool
+    public function isFull(): bool
     {
         return $this == self::FULL;
     }
 
-    public function isInstallmentPayment(): bool
+    public function isInstallment(): bool
     {
         return $this == self::INSTALLMENT;
     }
