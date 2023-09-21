@@ -3,16 +3,15 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
-class UserRequest extends FormRequest
+class CategoryUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->can('update', $this->category);
     }
 
     /**
@@ -24,10 +23,6 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'max:255', 'email', 'unique:users'],
-            'password' => ['required', Password::default()],
-            'roles' => ['required']
         ];
     }
 }

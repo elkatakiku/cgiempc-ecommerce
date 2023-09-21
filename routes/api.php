@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::apiResources([
         'users' => \App\Http\Controllers\Api\V1\UserController::class,
+        'categories' => \App\Http\Controllers\Api\V1\CategoryController::class,
     ]);
 
 });

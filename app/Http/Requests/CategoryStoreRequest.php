@@ -2,20 +2,18 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
+use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
-class UserStoreRequest extends FormRequest
+class CategoryStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->can('create', User::class);
+        return $this->user()->can('create', Category::class);
     }
-
 
     /**
      * Get the validation rules that apply to the request.
@@ -26,10 +24,6 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'max:255', 'email', 'unique:users'],
-            'password' => ['required', Password::default()],
-            'roles' => ['required']
         ];
     }
 }
