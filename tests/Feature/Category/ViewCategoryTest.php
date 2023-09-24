@@ -7,7 +7,6 @@ use App\Models\Category;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\Helper\ModelFactory;
 use Tests\TestCase;

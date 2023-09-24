@@ -29,7 +29,7 @@ class UserUpdateTest extends TestCase
         $user = ModelFactory::createUser(UserRole::MEMBER);
 
         $response = $this->actingAs($user)
-            ->deleteJson(route('users.update', $user->id), [
+            ->putJson(route('users.update', $user->id), [
                 'name' => 'Updated User'
             ]);
 
@@ -44,7 +44,7 @@ class UserUpdateTest extends TestCase
         $otherUser = ModelFactory::createUser(UserRole::ADMINISTRATOR);
 
         $response = $this->actingAs($user)
-            ->deleteJson(route('users.update', $otherUser->id), [
+            ->putJson(route('users.update', $otherUser->id), [
                 'name' => 'Updated User',
             ]);
 
@@ -59,7 +59,7 @@ class UserUpdateTest extends TestCase
         $otherUser = ModelFactory::createUser(UserRole::MEMBER);
 
         $response = $this->actingAs($user)
-            ->deleteJson(route('users.update', $otherUser->id));
+            ->putJson(route('users.update', $otherUser->id));
 
         $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
