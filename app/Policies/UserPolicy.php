@@ -22,7 +22,7 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        return $model->hasRole(UserRole::MEMBER->name);
+        return $user->role->isAdmin() || $model->hasRole(UserRole::MEMBER->getText());
     }
 
     /**

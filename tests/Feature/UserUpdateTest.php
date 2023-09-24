@@ -5,8 +5,10 @@ namespace Tests\Feature;
 use App\Enums\UserRole;
 use Database\Seeders\RoleSeeder;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\Helper\ModelFactory;
+use Tests\TestCase;
 
-class UserUpdateTest extends UserTest
+class UserUpdateTest extends TestCase
 {
     public function test_unauthenticated_user_cannot_access_update_user(): void
     {
@@ -14,7 +16,7 @@ class UserUpdateTest extends UserTest
 
         $response = $this->putJson(route(
             'users.update',
-            $this->createUser(UserRole::MEMBER)->id
+            ModelFactory::createUser(UserRole::MEMBER)->id
         ));
 
         $response->assertStatus(Response::HTTP_UNAUTHORIZED);
@@ -24,7 +26,7 @@ class UserUpdateTest extends UserTest
     {
         $this->seed(RoleSeeder::class);
 
-        $user = $this->createUser(UserRole::MEMBER);
+        $user = ModelFactory::createUser(UserRole::MEMBER);
 
         $response = $this->actingAs($user)
             ->deleteJson(route('users.update', $user->id), [
@@ -38,8 +40,8 @@ class UserUpdateTest extends UserTest
     {
         $this->seed(RoleSeeder::class);
 
-        $user = $this->createUser(UserRole::ADMINISTRATOR);
-        $otherUser = $this->createUser(UserRole::ADMINISTRATOR);
+        $user = ModelFactory::createUser(UserRole::ADMINISTRATOR);
+        $otherUser = ModelFactory::createUser(UserRole::ADMINISTRATOR);
 
         $response = $this->actingAs($user)
             ->deleteJson(route('users.update', $otherUser->id), [
@@ -53,8 +55,8 @@ class UserUpdateTest extends UserTest
     {
         $this->seed(RoleSeeder::class);
 
-        $user = $this->createUser(UserRole::MEMBER);
-        $otherUser = $this->createUser(UserRole::MEMBER);
+        $user = ModelFactory::createUser(UserRole::MEMBER);
+        $otherUser = ModelFactory::createUser(UserRole::MEMBER);
 
         $response = $this->actingAs($user)
             ->deleteJson(route('users.update', $otherUser->id));

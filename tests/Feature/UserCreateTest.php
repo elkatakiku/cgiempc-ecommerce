@@ -6,8 +6,10 @@ use App\Enums\UserRole;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\Helper\ModelFactory;
+use Tests\TestCase;
 
-class UserCreateTest extends UserTest
+class UserCreateTest extends TestCase
 {
     public function test_unauthenticated_user_cannot_access_create_user(): void
     {
@@ -35,12 +37,12 @@ class UserCreateTest extends UserTest
     {
         $this->seed([RoleSeeder::class,]);
 
-        $response = $this->actingAs($this->createUser(UserRole::ADMINISTRATOR))
+        $response = $this->actingAs(ModelFactory::createUser(UserRole::ADMINISTRATOR))
             ->postJson(route('users.store'), [
                 'name' => fake()->name,
                 'username' => fake()->unique()->userName,
                 'email' => fake()->safeEmail,
-                'password' => fake()->password,
+                'password' => fake()->password(8),
                 'roles' => [3],
             ]);
 
@@ -55,7 +57,7 @@ class UserCreateTest extends UserTest
             'email' => 'existing@email.com',
         ]);
 
-        $response = $this->actingAs($this->createUser(UserRole::ADMINISTRATOR))
+        $response = $this->actingAs(ModelFactory::createUser(UserRole::ADMINISTRATOR))
             ->postJson(route('users.store'), [
                 'name' => fake()->name,
                 'email' => $user->email,
@@ -78,7 +80,7 @@ class UserCreateTest extends UserTest
             'roles' => [3],
         ];
 
-        $auth = $this->actingAs($this->createUser(UserRole::ADMINISTRATOR));
+        $auth = $this->actingAs(ModelFactory::createUser(UserRole::ADMINISTRATOR));
 
         $response = $auth->postJson(route('users.store'), $user);
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -99,7 +101,7 @@ class UserCreateTest extends UserTest
             'roles' => [3],
         ];
 
-        $auth = $this->actingAs($this->createUser(UserRole::ADMINISTRATOR));
+        $auth = $this->actingAs(ModelFactory::createUser(UserRole::ADMINISTRATOR));
 
         $response = $auth->postJson(route('users.store'), $user);
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);

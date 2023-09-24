@@ -1,17 +1,14 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Helper;
 
 use App\Enums\UserRole;
+use App\Models\Category;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class UserTest extends TestCase
+class ModelFactory
 {
-    use RefreshDatabase;
-
-    protected function createUser(UserRole $role, array $roles = []): User
+    public static function createUser(UserRole $role, array $roles = []): User
     {
         $user = User::factory()->create([
             'role_id' => $role->value,
@@ -24,5 +21,10 @@ class UserTest extends TestCase
         }
 
         return $user;
+    }
+
+    public static function createCategory(): Category
+    {
+        return Category::factory()->create();
     }
 }

@@ -5,8 +5,10 @@ namespace Tests\Feature;
 use App\Enums\UserRole;
 use Database\Seeders\RoleSeeder;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\Helper\ModelFactory;
+use Tests\TestCase;
 
-class UserDeleteTest extends UserTest
+class UserDeleteTest extends TestCase
 {
     public function test_unauthenticated_user_cannot_access_delete_user(): void
     {
@@ -14,7 +16,7 @@ class UserDeleteTest extends UserTest
 
         $response = $this->deleteJson(route(
             'users.destroy',
-            $this->createUser(UserRole::MEMBER)->id
+            ModelFactory::createUser(UserRole::MEMBER)->id
         ));
 
         $response->assertStatus(Response::HTTP_UNAUTHORIZED);
@@ -24,7 +26,7 @@ class UserDeleteTest extends UserTest
     {
         $this->seed(RoleSeeder::class);
 
-        $user = $this->createUser(UserRole::MEMBER);
+        $user = ModelFactory::createUser(UserRole::MEMBER);
 
         $response = $this->actingAs($user)
             ->deleteJson(route('users.destroy', $user->id));
@@ -36,8 +38,8 @@ class UserDeleteTest extends UserTest
     {
         $this->seed(RoleSeeder::class);
 
-        $user = $this->createUser(UserRole::ADMINISTRATOR);
-        $otherUser = $this->createUser(UserRole::ADMINISTRATOR);
+        $user = ModelFactory::createUser(UserRole::ADMINISTRATOR);
+        $otherUser = ModelFactory::createUser(UserRole::ADMINISTRATOR);
 
         $response = $this->actingAs($user)
             ->deleteJson(route('users.destroy', $otherUser->id));
@@ -49,8 +51,8 @@ class UserDeleteTest extends UserTest
     {
         $this->seed(RoleSeeder::class);
 
-        $user = $this->createUser(UserRole::MEMBER);
-        $otherUser = $this->createUser(UserRole::MEMBER);
+        $user = ModelFactory::createUser(UserRole::MEMBER);
+        $otherUser = ModelFactory::createUser(UserRole::MEMBER);
 
         $response = $this->actingAs($user)
             ->deleteJson(route('users.destroy', $otherUser->id));

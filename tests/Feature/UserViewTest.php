@@ -4,19 +4,18 @@ namespace Tests\Feature;
 
 use App\Enums\UserRole;
 use Database\Seeders\RoleSeeder;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\Helper\ModelFactory;
+use Tests\TestCase;
 
-class UserViewTest extends UserTest
+class UserViewTest extends TestCase
 {
     public function test_unauthenticated_user_cannot_view_a_user(): void
     {
         $this->seed(RoleSeeder::class);
-        $user = $this->createUser(UserRole::MEMBER);
+        $user = ModelFactory::createUser(UserRole::MEMBER);
 
         $response = $this->getJson(route('users.show', $user->id));
-
-        Log::info($response->content());
 
         $response->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
@@ -25,8 +24,8 @@ class UserViewTest extends UserTest
     {
         $this->seed(RoleSeeder::class);
 
-        $admin = $this->createUser(UserRole::ADMINISTRATOR);
-        $user = $this->createUser(UserRole::MEMBER);
+        $admin = ModelFactory::createUser(UserRole::ADMINISTRATOR);
+        $user = ModelFactory::createUser(UserRole::MEMBER);
 
         $response = $this->actingAs($admin)->getJson(route('users.show', $user->id));
 
@@ -48,10 +47,11 @@ class UserViewTest extends UserTest
     {
         $this->seed(RoleSeeder::class);
 
-        $user = $this->createUser(UserRole::MEMBER);
-        $anotherUser = $this->createUser(UserRole::MEMBER);
+        $user = ModelFactory::createUser(UserRole::MEMBER);
+        $anotherUser = ModelFactory::createUser(UserRole::MEMBER);
 
-        $response = $this->actingAs($user)->getJson(route('users.show', $anotherUser->id));
+        $response = $this->actingAs($user)
+            ->getJson(route('users.show', $anotherUser->{$anotherUser->getRouteKeyName()}));
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure([
@@ -68,7 +68,7 @@ class UserViewTest extends UserTest
     {
         $this->seed(RoleSeeder::class);
 
-        $user = $this->createUser(UserRole::MEMBER);
+        $user = ModelFactory::createUser(UserRole::MEMBER);
 
         $response = $this->actingAs($user)->getJson(route('users.show', $user->id));
 
@@ -87,7 +87,7 @@ class UserViewTest extends UserTest
     {
         $this->seed(RoleSeeder::class);
 
-        $user = $this->createUser(UserRole::MEMBER);
+        $user = ModelFactory::createUser(UserRole::MEMBER);
 
         $response = $this->actingAs($user)->getJson(route('users.show', 1));
 

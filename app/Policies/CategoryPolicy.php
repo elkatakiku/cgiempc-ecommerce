@@ -15,25 +15,16 @@ class CategoryPolicy
 
     public function create(User $user): bool
     {
-        Log::info(__METHOD__);
-        Log::info($user->name);
-        Log::info($user->role->name);
         return $user->role->isAdmin();
     }
 
     public function update(User $user, Category $category): bool
     {
-        Log::info(__METHOD__);
-        Log::info($user->name);
-        Log::info($user->role->name);
         return $user->role->isAdmin();
     }
 
     public function delete(User $user, Category $category): bool
     {
-        Log::info(__METHOD__);
-        Log::info($user->name);
-        Log::info($user->role->name);
         return $user->role->isAdmin();
     }
 }
