@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-use PHPUnit\Framework\IncompleteTest;
+use Illuminate\Support\Collection;
 
 enum OrderStatus: string
 {
@@ -10,6 +10,7 @@ enum OrderStatus: string
     case APPROVED = 'approved';
     case ONGOING = 'ongoing';
     case PAID = 'paid';
+    case CANCELLED = 'cancelled';
 
     public function getText(): string
     {
@@ -18,6 +19,18 @@ enum OrderStatus: string
             self::APPROVED => 'Approved',
             self::ONGOING => 'Ongoing',
             self::PAID => 'Paid',
+            self::CANCELLED => 'Cancelled',
         };
+    }
+
+    public static function getStatuses(): Collection
+    {
+        return collect([
+            self::PENDING->value => self::PENDING->getText(),
+            self::APPROVED->value => self::APPROVED->getText(),
+            self::ONGOING->value => self::ONGOING->getText(),
+            self::PAID->value => self::PAID->getText(),
+            self::CANCELLED->value => self::CANCELLED->getText(),
+        ]);
     }
 }

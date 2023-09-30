@@ -15,10 +15,11 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('product_id')->constrained()->cascadeOnDelete();
+            $table->integer('price');
             $table->integer('quantity');
             $table->integer('total');
             $table->integer('balance');
-            $table->string('type_of_payment');
+            $table->string('payment_type');
             $table->string('status');
             $table->timestamps();
         });

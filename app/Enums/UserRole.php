@@ -17,12 +17,12 @@ enum UserRole: int
 
     public function isStaff(): bool
     {
-        return $this == self::ADMINISTRATOR;
+        return $this == self::STAFF;
     }
 
     public function isMember(): bool
     {
-        return $this == self::ADMINISTRATOR;
+        return $this == self::MEMBER;
     }
 
     public function getText(): string

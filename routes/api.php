@@ -22,10 +22,15 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::apiResources([
         'users' => \App\Http\Controllers\Api\V1\UserController::class,
         'categories' => \App\Http\Controllers\Api\V1\CategoryController::class,
+        'products' => \App\Http\Controllers\Api\V1\CategoryController::class,
+        'orders' => \App\Http\Controllers\Api\V1\OrderController::class,
     ]);
 
     Route::apiResource('roles', \App\Http\Controllers\Api\V1\RoleController::class)
         ->only('index', 'show');
+
+
+    Route::get('profile', [\App\Http\Controllers\Api\V1\UserController::class, 'show']);
 
 });
 

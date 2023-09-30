@@ -27,7 +27,7 @@ enum PaymentType: string
         };
     }
 
-    public function getTypes(): Collection
+    public static function getTypes(): Collection
     {
         return collect([
             self::FULL->value => self::FULL->getText(),

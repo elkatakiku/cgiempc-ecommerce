@@ -18,15 +18,16 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'product_id',
+        'price',
         'quantity',
         'total',
         'balance',
-        'type_of_payment',
+        'payment_type',
         'status',
     ];
 
     protected $casts = [
-        'type_of_payment' => PaymentType::class,
+        'payment_type' => PaymentType::class,
         'status' => OrderStatus::class,
     ];
 
@@ -38,6 +39,11 @@ class Order extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function price(): Attribute
+    {
+        return ModelPropertyCaster::toMoney();
     }
 
     public function total(): Attribute
