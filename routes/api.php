@@ -24,6 +24,9 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
         'categories' => \App\Http\Controllers\Api\V1\CategoryController::class,
     ]);
 
+    Route::apiResource('roles', \App\Http\Controllers\Api\V1\RoleController::class)
+        ->only('index', 'show');
+
 });
 
 Route::post('login', \App\Http\Controllers\Api\V1\Auth\LoginController::class)->name('login');
