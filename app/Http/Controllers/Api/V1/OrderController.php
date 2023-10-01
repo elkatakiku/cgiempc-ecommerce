@@ -29,9 +29,7 @@ class OrderController extends Controller
         $orders = Order::query()
             ->with('user', 'product')
             ->when($request->product, function ($query) use ($request) {
-                $product = Product::query()->where('slug', $request->product)->get();
-
-                if ($product) {
+                if (Product::query()->where('slug', $request->product)->exists()) {
                     $query->where('product_id', $request->product);
                 }
             })

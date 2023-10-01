@@ -22,7 +22,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::apiResources([
         'users' => \App\Http\Controllers\Api\V1\UserController::class,
         'categories' => \App\Http\Controllers\Api\V1\CategoryController::class,
-        'products' => \App\Http\Controllers\Api\V1\CategoryController::class,
+        'products' => \App\Http\Controllers\Api\V1\ProductController::class,
         'orders' => \App\Http\Controllers\Api\V1\OrderController::class,
     ]);
 
